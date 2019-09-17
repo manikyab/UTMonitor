@@ -49,12 +49,19 @@ namespace Siemens.UTMonitor.UI
         private void FileWatch()
         {
             Invoker.DataFetcher dataFetcher = new Invoker.DataFetcher(this.GetNotification);
-            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory);
+            Invoker.ErrorFetcher errorFetcher = new Invoker.ErrorFetcher(this.GetError);
+            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory,errorFetcher);
         }
         public void GetNotification(List<string> list)
         {
             MessageBox.Show(list[0], "Test Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        public void GetError(string error)
+        {
+            MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
         private void SourceView_Load(object sender, EventArgs e)
         {
 

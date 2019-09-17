@@ -4,72 +4,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Siemens.UTMonitor.NunitFinder;
-using Siemens.UTMonitor.RunNUnit;
-using Siemens.UTMonitor.XMLParser;
 using Siemens.UTMonitor.Invoker;
+using Siemens.UTMonitor.Driver;
 
 namespace Siemens.UTMonitor.FileWatcher
 {
     public class FileWatcher
     {
         public string Directory { get; set; }
-        public string FileName { get; set; }
         DataFetcher fetcher;
-        public FileWatcher()
-        {
+        ErrorFetcher errorFetcher;
+        DLLFilter dLLFilter = new DLLFilter();
 
-        }
-        public FileWatcher(DataFetcher dataFetcher, string directory)
+        public FileWatcher(DataFetcher dataFetcher, string directory,ErrorFetcher errorFetcher)
         {
             this.Directory = directory;
-            fetcher = dataFetcher;
+            this.fetcher = dataFetcher;
+            this.errorFetcher = errorFetcher;
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = directory;
             watcher.Filter = "*.dll";
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
-
             //Event Handler
 
 
             watcher.Changed += watcher_Changed;
         }
-        private void watcher_Changed(object sender, FileSystemEventArgs e)
+        private void watcher_Changed(object sender, FileSystemEventArgs ev)
         {
-            //Console.WriteLine($"File:{e.FullPath} changed at {DateTime.Now.ToLocalTime()}");
-
-            if (e.Name != FileName)
+            try
             {
-                var data = e.FullPath.Split('\\');
-                var len = data.Length;
-                var dllName = data[len - 1];
-                var binFolder = data[len - 3];
-                var projectName = data[len - 4];
-                var projectLocation = string.Join("\\", data.Take(len - 1));
-                if (binFolder == "bin" && dllName.StartsWith(projectName))
+                var result = dLLFilter.FilterDLL(ev.FullPath);
+                if (result)
                 {
-                    string testLocation;
-                    using (var Nfinder=new NunitFinder.NunitFinder())
+                    using (var driver = new Driver.Driver())
                     {
-                        testLocation = Nfinder.NUnitFinder(Directory, projectName, projectLocation);
-                    }
-
-                    using (var RNunit=new RunNUnit.RunNUnit())
-                    {
-                        RNunit.RunNunit(testLocation, projectLocation, projectName);
-                    }
-
-                    List<string> XMLout = null;
-
-                    using (var XMLParse=new XMLParser.XMLParser())
-                    {
-                        XMLout = XMLParse.ResultDisplay(testLocation);
-                        fetcher.Invoke(XMLout);
+                        var resultData=driver.ExecuteDriver(ev.FullPath, Directory);
+                        fetcher.Invoke(resultData);
                     }
                 }
             }
-            FileName = e.Name;
+            catch(Exception e)
+            {
+                errorFetcher.Invoke(e.Message);
+            }
         }
     }
 }
