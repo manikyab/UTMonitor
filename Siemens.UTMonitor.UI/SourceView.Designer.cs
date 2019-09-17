@@ -35,6 +35,7 @@
             this.Monitor = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btn_exitMonitor = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -91,11 +92,22 @@
             this.columnHeader1.Text = "Source Folder in Monitor";
             this.columnHeader1.Width = 492;
             // 
+            // btn_exitMonitor
+            // 
+            this.btn_exitMonitor.Location = new System.Drawing.Point(45, 422);
+            this.btn_exitMonitor.Name = "btn_exitMonitor";
+            this.btn_exitMonitor.Size = new System.Drawing.Size(75, 23);
+            this.btn_exitMonitor.TabIndex = 5;
+            this.btn_exitMonitor.Text = "Stop Monitor";
+            this.btn_exitMonitor.UseVisualStyleBackColor = true;
+            this.btn_exitMonitor.Click += new System.EventHandler(this.btn_exitMonitor_Click);
+            // 
             // SourceView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(573, 450);
+            this.Controls.Add(this.btn_exitMonitor);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.Monitor);
             this.Controls.Add(this.findFolder);
@@ -118,6 +130,7 @@
         private System.Windows.Forms.Button Monitor;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Button btn_exitMonitor;
     }
 }
 

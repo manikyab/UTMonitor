@@ -15,6 +15,7 @@ namespace Siemens.UTMonitor.UI
     public partial class SourceView : Form
     {
         string directory;
+        CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
         public SourceView()
         {
             InitializeComponent();
@@ -32,20 +33,21 @@ namespace Siemens.UTMonitor.UI
 
         private void Monitor_Click(object sender, EventArgs e)
         {
-            //System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource();
+            //
             if (folderPath.Text.Trim().Length > 0)
             {
-                 directory = folderPath.Text.Trim();
+                directory = folderPath.Text.Trim();
                 //Action action = FileWatch;
-                //Task.Run(action,cancellationTokenSource.Token);
+                //var token = cts.Token;
+                //Task.Run(action, token);
                 Thread thr = new Thread(FileWatch);
                 thr.Start();
                 var id = thr.ManagedThreadId;
 
-                MessageBox.Show(id.ToString());
+                //MessageBox.Show(id.ToString());
 
                 ListViewItem li = new ListViewItem(directory);
-                li.Tag = id;
+                li.Tag = thr;
 
                 listView1.Items.Add(li);
 
@@ -62,13 +64,13 @@ namespace Siemens.UTMonitor.UI
         {
             Invoker.DataFetcher dataFetcher = new Invoker.DataFetcher(this.GetNotification);
             Invoker.ErrorFetcher errorFetcher = new Invoker.ErrorFetcher(this.GetError);
-            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory,errorFetcher);
+            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory, errorFetcher);
         }
         public void GetNotification(Dictionary<string, string> list)
         {
             var obj = new DisplayResult();
             obj.Data = list;
-            obj.Show();
+            obj.ShowDialog();
             //MessageBox.Show(list["Result"]);
         }
 
@@ -80,6 +82,13 @@ namespace Siemens.UTMonitor.UI
         private void SourceView_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_exitMonitor_Click(object sender, EventArgs e)
+        {
+
+            Thread thr = (Thread)listView1.SelectedItems[0].Tag;
+            thr.Abort();
         }
     }
 }

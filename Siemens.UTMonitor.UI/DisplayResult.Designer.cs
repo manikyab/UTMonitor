@@ -47,7 +47,7 @@
             this.assertsData = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
-            this.FileLocation = new System.Windows.Forms.Label();
+            this.FileLocation = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label1
@@ -227,19 +227,21 @@
             // FileLocation
             // 
             this.FileLocation.AutoSize = true;
-            this.FileLocation.Location = new System.Drawing.Point(128, 253);
+            this.FileLocation.Location = new System.Drawing.Point(131, 253);
             this.FileLocation.Name = "FileLocation";
-            this.FileLocation.Size = new System.Drawing.Size(35, 13);
-            this.FileLocation.TabIndex = 21;
-            this.FileLocation.Text = "label2";
+            this.FileLocation.Size = new System.Drawing.Size(55, 13);
+            this.FileLocation.TabIndex = 23;
+            this.FileLocation.TabStop = true;
+            this.FileLocation.Text = "linkLabel1";
+            this.FileLocation.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.FileLocation_LinkClicked);
             // 
             // DisplayResult
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(289, 359);
-            this.Controls.Add(this.label56);
             this.Controls.Add(this.FileLocation);
+            this.Controls.Add(this.label56);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.inconclusiveData);
             this.Controls.Add(this.assertsData);
@@ -287,6 +289,6 @@
         private System.Windows.Forms.Label assertsData;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label56;
-        private System.Windows.Forms.Label FileLocation;
+        private System.Windows.Forms.LinkLabel FileLocation;
     }
 }
