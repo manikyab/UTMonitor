@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.UTMonitor.NunitFind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.UTMonitor.RunNUnit", "Siemens.UTMonitor.RunNUnit\Siemens.UTMonitor.RunNUnit.csproj", "{EC994652-0A7E-4E32-B932-B1EF7F725A00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.UTMonitor.XMLParser", "Siemens.UTMonitor.XMLParser\Siemens.UTMonitor.XMLParser.csproj", "{C11344EE-21F3-4277-A7F7-F055DE65C82D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{EC994652-0A7E-4E32-B932-B1EF7F725A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC994652-0A7E-4E32-B932-B1EF7F725A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC994652-0A7E-4E32-B932-B1EF7F725A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{3FC93498-8A54-47E9-A9E6-9091394ABF23} = {749BAD7A-E814-4CCC-9A93-DE39121B8FE9}
 		{4707A05F-BC39-4E42-86AE-19807FCF811F} = {749BAD7A-E814-4CCC-9A93-DE39121B8FE9}
 		{EC994652-0A7E-4E32-B932-B1EF7F725A00} = {749BAD7A-E814-4CCC-9A93-DE39121B8FE9}
+		{C11344EE-21F3-4277-A7F7-F055DE65C82D} = {749BAD7A-E814-4CCC-9A93-DE39121B8FE9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {60113881-02C9-490F-BB98-680CAF4F9A54}
