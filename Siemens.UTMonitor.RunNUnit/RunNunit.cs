@@ -7,8 +7,11 @@ using System.Diagnostics;
 
 namespace Siemens.UTMonitor.RunNUnit
 {
-    public class RunNUnit
+    public class RunNUnit:IDisposable
     {
+        public void Dispose() { }
+
+
         private Process CreateProcess()
         {
             var processInfo = new ProcessStartInfo();
@@ -28,9 +31,8 @@ namespace Siemens.UTMonitor.RunNUnit
             process.StandardInput.WriteLine(command);
         }
 
-        public bool RunNunit(string testlocation,string projectLocation,string projectName)
+        public void RunNunit(string testlocation,string projectLocation,string projectName)
         {
-            var returnValue = false;
             try
             {
                 var process = CreateProcess();
@@ -58,7 +60,6 @@ namespace Siemens.UTMonitor.RunNUnit
             {
                 Console.WriteLine(e.Data);
             }
-            return returnValue;
         }
     }
 }

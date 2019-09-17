@@ -44,5 +44,19 @@
     <Compile Include="FileWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Siemens.UTMonitor.NunitFinder\Siemens.UTMonitor.NunitFinder.csproj">
+      <Project>{4707a05f-bc39-4e42-86ae-19807fcf811f}</Project>
+      <Name>Siemens.UTMonitor.NunitFinder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Siemens.UTMonitor.RunNUnit\Siemens.UTMonitor.RunNUnit.csproj">
+      <Project>{ec994652-0a7e-4e32-b932-b1ef7f725a00}</Project>
+      <Name>Siemens.UTMonitor.RunNUnit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Siemens.UTMonitor.XMLParser\Siemens.UTMonitor.XMLParser.csproj">
+      <Project>{c11344ee-21f3-4277-a7f7-f055de65c82d}</Project>
+      <Name>Siemens.UTMonitor.XMLParser</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

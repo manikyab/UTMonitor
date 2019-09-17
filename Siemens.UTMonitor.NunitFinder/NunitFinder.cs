@@ -11,9 +11,9 @@ namespace Siemens.UTMonitor.NunitFinder
     {
         public void Dispose() { }
 
-        public bool NUnitFinder(string directory, string projectName, string dll_location)
+        public string NUnitFinder(string directory, string projectName, string dll_location)
         {
-            var returnValue = false;
+            string returnValue = null;
             try
             {
                 List<string> files = new List<string>();
@@ -21,7 +21,7 @@ namespace Siemens.UTMonitor.NunitFinder
                 var dest = files[0].Split('\\');
                 var destination = string.Join("\\", dest.Take((dest.Length) - 1));
 
-                returnValue = true;
+                returnValue = destination;
             }
             catch(Exception e)
             {

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Siemens.UTMonitor.NunitFinder;
+using Siemens.UTMonitor.RunNUnit;
+using Siemens.UTMonitor.XMLParser;
 
 namespace Siemens.UTMonitor.FileWatcher
 {
@@ -36,19 +39,30 @@ namespace Siemens.UTMonitor.FileWatcher
                 var len = data.Length;
                 var dllName = data[len - 1];
                 var binFolder = data[len - 3];
-                var nameSpace = data[len - 4];
-                var location = string.Join("\\", data.Take(len - 1));
-                if (binFolder == "bin" && dllName.StartsWith(nameSpace))
+                var projectName = data[len - 4];
+                var projectLocation = string.Join("\\", data.Take(len - 1));
+                if (binFolder == "bin" && dllName.StartsWith(projectName))
                 {
-                    var result=UT_Search.GetTestFile(directory, nameSpace, location);
-                    if (result)
+                    string testLocation;
+                    using (var Nfinder=new NunitFinder.NunitFinder())
                     {
-                        fileName = null;
+                        testLocation = Nfinder.NUnitFinder(directory, projectName, projectLocation);
                     }
-                    fileName = e.Name;
 
+                    using (var RNunit=new RunNUnit.RunNUnit())
+                    {
+                        RNunit.RunNunit(testLocation, projectLocation, projectName);
+                    }
+
+                    List<string> XMLout = null;
+
+                    using (var XMLParse=new XMLParser.XMLParser())
+                    {
+                        XMLout = XMLParse.ResultDisplay(testLocation);
+                    }
                 }
             }
+            fileName = e.Name;
         }
     }
 }
