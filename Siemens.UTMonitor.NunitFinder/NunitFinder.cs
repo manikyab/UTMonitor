@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Siemens.UTMonitor.Invoker;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Siemens.UTMonitor.NunitFinder
 {
     public class NunitFinder:IDisposable
     {
+
         public void Dispose() { }
 
-        public string NUnitFinder(string directory, string projectName, string dll_location)
+        public string NUnitFinder(string directory, string projectName, string dll_location,ErrorFetcher errorFetcher)
         {
             string returnValue = null;
             try
@@ -25,7 +27,7 @@ namespace Siemens.UTMonitor.NunitFinder
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.Data);
+                errorFetcher.Invoke(e.Message);
             }
             return returnValue;
         }

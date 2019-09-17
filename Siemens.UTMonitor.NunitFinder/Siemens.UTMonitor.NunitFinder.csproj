@@ -44,5 +44,11 @@
     <Compile Include="NunitFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Siemens.UTMonitor.Invoker\Siemens.UTMonitor.Invoker.csproj">
+      <Project>{AE7567D0-BC3C-4544-B282-502F20432453}</Project>
+      <Name>Siemens.UTMonitor.Invoker</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

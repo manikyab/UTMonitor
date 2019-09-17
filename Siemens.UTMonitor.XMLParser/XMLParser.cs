@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Siemens.UTMonitor.Invoker;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +13,33 @@ namespace Siemens.UTMonitor.XMLParser
         public void Dispose() { }
 
 
-        public List<string> ResultDisplay(string ResultLocation)
+        public Dictionary<string, string> ResultDisplay(string ResultLocation,ErrorFetcher errorfetcher)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(ResultLocation + "\\TestResult.xml");
-            XmlNodeList elem = doc.GetElementsByTagName("test-run");
-            List<string> result = new List<string>();
-            foreach (XmlNode item in elem)
+            Dictionary<string,string> result = null;
+            try
             {
-                result.Add(item.Attributes["result"].Value);
-                result.Add(item.Attributes["total"].Value);
-                result.Add(item.Attributes["passed"].Value);
-                result.Add(item.Attributes["skipped"].Value);
-                result.Add(item.Attributes["failed"].Value);
-                result.Add(item.Attributes["inconclusive"].Value);
-                result.Add(item.Attributes["asserts"].Value);
+                XmlDocument doc = new XmlDocument();
+                doc.Load(ResultLocation + "\\TestResult.xml");
+                XmlNodeList elem = doc.GetElementsByTagName("test-run");
+                result = new Dictionary<string, string>();
+                XmlNode fileName = doc.GetElementsByTagName("test-suite")[0];
+                result.Add("Test-Name", fileName.Attributes["name"].Value);
+                foreach (XmlNode item in elem)
+                {
+                    result.Add("Result",item.Attributes["result"].Value);
+                    result.Add("Total",item.Attributes["total"].Value);
+                    result.Add("Passed",item.Attributes["passed"].Value);
+                    result.Add("Skipped",item.Attributes["skipped"].Value);
+                    result.Add("Failed",item.Attributes["failed"].Value);
+                    result.Add("Inconclusive",item.Attributes["inconclusive"].Value);
+                    result.Add("Asserts",item.Attributes["asserts"].Value);
+                }
+                result.Add("Location", ResultLocation + "\\TestResult.xml");
             }
-
+            catch (Exception e)
+            {
+                errorfetcher.Invoke(e.Message);
+            }
             return result;
         }
     }

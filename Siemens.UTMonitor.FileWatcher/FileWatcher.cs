@@ -40,7 +40,7 @@ namespace Siemens.UTMonitor.FileWatcher
                 {
                     using (var driver = new Driver.Driver())
                     {
-                        var resultData=driver.ExecuteDriver(ev.FullPath, Directory);
+                        Dictionary<string, string> resultData =driver.ExecuteDriver(ev.FullPath, Directory,errorFetcher);
                         fetcher.Invoke(resultData);
                     }
                 }

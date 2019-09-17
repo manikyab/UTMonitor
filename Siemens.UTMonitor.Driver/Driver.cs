@@ -10,19 +10,29 @@ namespace Siemens.UTMonitor.Driver
 {
     public class Driver:IDisposable
     {
+        ErrorFetcher errorFetcher;
+
         public void Dispose() { }
 
-        public List<string> ExecuteDriver(string projectDLLPath, string directory)
+        public Dictionary<string, string> ExecuteDriver(string projectDLLPath, string directory,ErrorFetcher errorFetcher)
         {
-            List<string> result = null;
-            var pathSplit = projectDLLPath.Split('\\');
-            var projectLocation = string.Join("\\", pathSplit.Take((pathSplit.Length) - 1));
-            var projectName = pathSplit[pathSplit.Length - 4];
-            var testLocation = GetNunitLocation(projectName, projectLocation, directory);
+            Dictionary<string, string> result = null;
+            this.errorFetcher = errorFetcher;
+            try
+            {
+                var pathSplit = projectDLLPath.Split('\\');
+                var projectLocation = string.Join("\\", pathSplit.Take((pathSplit.Length) - 1));
+                var projectName = pathSplit[pathSplit.Length - 4];
+                var testLocation = GetNunitLocation(projectName, projectLocation, directory);
 
-            RunNunitTest(testLocation, projectLocation, projectName);
+                RunNunitTest(testLocation, projectLocation, projectName);
 
-            result=GetResult(testLocation);
+                result = GetResult(testLocation);
+            }
+            catch(Exception e)
+            {
+                errorFetcher.Invoke(e.Message);
+            }
             return result;
         }
         
@@ -31,7 +41,7 @@ namespace Siemens.UTMonitor.Driver
            string returnValue = null;
             using (var nunitfinder = new NunitFinder.NunitFinder())
             {
-                returnValue = nunitfinder.NUnitFinder(directory, projectName, sourceLocation);
+                returnValue = nunitfinder.NUnitFinder(directory, projectName, sourceLocation, errorFetcher);
             }
             return returnValue;
         }
@@ -39,16 +49,16 @@ namespace Siemens.UTMonitor.Driver
         {
             using (var runNunit=new RunNUnit.RunNUnit())
             {
-                runNunit.RunNunit(testLocation, projectLocation, projectName);
+                runNunit.RunNunit(testLocation, projectLocation, projectName, errorFetcher);
             }
         }
 
-        private List<string> GetResult(string ResultLocation)
+        private Dictionary<string, string> GetResult(string ResultLocation)
         {
-            List < string > result = null;
+            Dictionary<string, string> result = null;
             using (var XMLparse=new XMLParser.XMLParser())
             {
-                result = XMLparse.ResultDisplay(ResultLocation);
+                result = XMLparse.ResultDisplay(ResultLocation, errorFetcher);
             }
             return result;
         }

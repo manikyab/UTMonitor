@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Siemens.UTMonitor.Invoker;
 
 namespace Siemens.UTMonitor.RunNUnit
 {
@@ -33,7 +34,7 @@ namespace Siemens.UTMonitor.RunNUnit
             process.StandardInput.WriteLine(command);
         }
 
-        public void RunNunit(string testlocation,string projectLocation,string projectName)
+        public void RunNunit(string testlocation,string projectLocation,string projectName,ErrorFetcher errorfetcher)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace Siemens.UTMonitor.RunNUnit
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Data);
+                errorfetcher.Invoke(e.Message);
             }
         }
     }
