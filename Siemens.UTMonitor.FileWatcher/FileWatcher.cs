@@ -7,17 +7,23 @@ using System.IO;
 using Siemens.UTMonitor.NunitFinder;
 using Siemens.UTMonitor.RunNUnit;
 using Siemens.UTMonitor.XMLParser;
+using Siemens.UTMonitor.Invoker;
 
 namespace Siemens.UTMonitor.FileWatcher
 {
     public class FileWatcher
     {
-        public string directory { get; set; }
-        public string fileName { get; set; }
-        public void FileWatching()
+        public string Directory { get; set; }
+        public string FileName { get; set; }
+        DataFetcher fetcher;
+        public FileWatcher()
         {
 
-
+        }
+        public FileWatcher(DataFetcher dataFetcher, string directory)
+        {
+            this.Directory = directory;
+            fetcher = dataFetcher;
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = directory;
             watcher.Filter = "*.dll";
@@ -33,7 +39,7 @@ namespace Siemens.UTMonitor.FileWatcher
         {
             //Console.WriteLine($"File:{e.FullPath} changed at {DateTime.Now.ToLocalTime()}");
 
-            if (e.Name != fileName)
+            if (e.Name != FileName)
             {
                 var data = e.FullPath.Split('\\');
                 var len = data.Length;
@@ -46,7 +52,7 @@ namespace Siemens.UTMonitor.FileWatcher
                     string testLocation;
                     using (var Nfinder=new NunitFinder.NunitFinder())
                     {
-                        testLocation = Nfinder.NUnitFinder(directory, projectName, projectLocation);
+                        testLocation = Nfinder.NUnitFinder(Directory, projectName, projectLocation);
                     }
 
                     using (var RNunit=new RunNUnit.RunNUnit())
@@ -59,10 +65,11 @@ namespace Siemens.UTMonitor.FileWatcher
                     using (var XMLParse=new XMLParser.XMLParser())
                     {
                         XMLout = XMLParse.ResultDisplay(testLocation);
+                        fetcher.Invoke(XMLout);
                     }
                 }
             }
-            fileName = e.Name;
+            FileName = e.Name;
         }
     }
 }

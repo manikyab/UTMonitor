@@ -84,6 +84,10 @@
       <Project>{3fc93498-8a54-47e9-a9e6-9091394abf23}</Project>
       <Name>Siemens.UTMonitor.FileWatcher</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Siemens.UTMonitor.Invoker\Siemens.UTMonitor.Invoker.csproj">
+      <Project>{ae7567d0-bc3c-4544-b282-502f20432453}</Project>
+      <Name>Siemens.UTMonitor.Invoker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

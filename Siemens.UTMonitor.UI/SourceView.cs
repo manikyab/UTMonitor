@@ -13,6 +13,7 @@ namespace Siemens.UTMonitor.UI
 {
     public partial class SourceView : Form
     {
+        string directory;
         public SourceView()
         {
             InitializeComponent();
@@ -30,10 +31,14 @@ namespace Siemens.UTMonitor.UI
 
         private void Monitor_Click(object sender, EventArgs e)
         {
+            System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource();
             if (folderPath.Text.Trim().Length > 0)
             {
-                
-                
+                 directory = folderPath.Text.Trim();
+                Action action = FileWatch;
+                Task.Run(action,cancellationTokenSource.Token);
+
+                folderPath.Text = "";
             }
             else
             {
@@ -41,12 +46,18 @@ namespace Siemens.UTMonitor.UI
             }
         }
 
-        private void Monitor()
+        private void FileWatch()
         {
-            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher();
-            fileWatcher.directory = folderPath.Text.Trim();
-            fileWatcher.FileWatching();
-            folderPath.Text = "";
+            Invoker.DataFetcher dataFetcher = new Invoker.DataFetcher(this.GetNotification);
+            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory);
+        }
+        public void GetNotification(List<string> list)
+        {
+            MessageBox.Show(list[0], "Test Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void SourceView_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

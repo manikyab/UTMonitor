@@ -17,6 +17,8 @@ namespace Siemens.UTMonitor.RunNUnit
             var processInfo = new ProcessStartInfo();
             processInfo.FileName = "cmd.exe";
             processInfo.RedirectStandardInput = true;
+            processInfo.UseShellExecute = false;
+            processInfo.CreateNoWindow = true;
 
             Process process = new Process();
             process.StartInfo = processInfo;
@@ -54,7 +56,6 @@ namespace Siemens.UTMonitor.RunNUnit
 
                 process.WaitForExit();
 
-                returnValue = true;
             }
             catch (Exception e)
             {

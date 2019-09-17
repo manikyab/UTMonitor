@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3FC93498-8A54-47E9-A9E6-9091394ABF23}</ProjectGuid>
+    <ProjectGuid>{AE7567D0-BC3C-4544-B282-502F20432453}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Siemens.UTMonitor.FileWatcher</RootNamespace>
-    <AssemblyName>Siemens.UTMonitor.FileWatcher</AssemblyName>
+    <RootNamespace>Siemens.UTMonitor.Invoker</RootNamespace>
+    <AssemblyName>Siemens.UTMonitor.Invoker</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,26 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileWatcher.cs" />
+    <Compile Include="DataFetcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Siemens.UTMonitor.Invoker\Siemens.UTMonitor.Invoker.csproj">
-      <Project>{ae7567d0-bc3c-4544-b282-502f20432453}</Project>
-      <Name>Siemens.UTMonitor.Invoker</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Siemens.UTMonitor.NunitFinder\Siemens.UTMonitor.NunitFinder.csproj">
-      <Project>{4707a05f-bc39-4e42-86ae-19807fcf811f}</Project>
-      <Name>Siemens.UTMonitor.NunitFinder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Siemens.UTMonitor.RunNUnit\Siemens.UTMonitor.RunNUnit.csproj">
-      <Project>{ec994652-0a7e-4e32-b932-b1ef7f725a00}</Project>
-      <Name>Siemens.UTMonitor.RunNUnit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Siemens.UTMonitor.XMLParser\Siemens.UTMonitor.XMLParser.csproj">
-      <Project>{c11344ee-21f3-4277-a7f7-f055de65c82d}</Project>
-      <Name>Siemens.UTMonitor.XMLParser</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

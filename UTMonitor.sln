@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.UTMonitor.RunNUnit"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.UTMonitor.XMLParser", "Siemens.UTMonitor.XMLParser\Siemens.UTMonitor.XMLParser.csproj", "{C11344EE-21F3-4277-A7F7-F055DE65C82D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.UTMonitor.Invoker", "Siemens.UTMonitor.Invoker\Siemens.UTMonitor.Invoker.csproj", "{AE7567D0-BC3C-4544-B282-502F20432453}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11344EE-21F3-4277-A7F7-F055DE65C82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7567D0-BC3C-4544-B282-502F20432453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7567D0-BC3C-4544-B282-502F20432453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7567D0-BC3C-4544-B282-502F20432453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7567D0-BC3C-4544-B282-502F20432453}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
