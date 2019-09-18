@@ -16,6 +16,8 @@ namespace Siemens.UTMonitor.UI
     {
         string directory;
         Dictionary<int, Thread> monitorThreads = new Dictionary<int, Thread>();
+        List<string> SCList = new List<string>();
+
         public SourceView()
         {
             InitializeComponent();
@@ -37,6 +39,7 @@ namespace Siemens.UTMonitor.UI
             if (folderPath.Text.Trim().Length > 0)
             {
                 directory = folderPath.Text.Trim();
+                SCList.Add(directory);
                 //Action action = FileWatch;
                 //var token = cts.Token;
                 //Task.Run(action, token);
@@ -65,7 +68,8 @@ namespace Siemens.UTMonitor.UI
         {
             Invoker.DataFetcher dataFetcher = new Invoker.DataFetcher(this.GetNotification);
             Invoker.ErrorFetcher errorFetcher = new Invoker.ErrorFetcher(this.GetError);
-            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory, errorFetcher);
+            Invoker.MonitoringSourceControl sourceControl = new Invoker.MonitoringSourceControl(this.GetSCList);
+            FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory, errorFetcher,sourceControl);
             return fileWatcher;
         }
         public void GetNotification(Dictionary<string, string> list)
@@ -74,6 +78,11 @@ namespace Siemens.UTMonitor.UI
             obj.Data = list;
             obj.ShowDialog();
             //MessageBox.Show(list["Result"]);
+        }
+
+        public List<string> GetSCList()
+        {
+            return SCList;
         }
 
         public void GetError(string error)
@@ -89,10 +98,8 @@ namespace Siemens.UTMonitor.UI
         private void btn_exitMonitor_Click(object sender, EventArgs e)
         {
 
-            int id = (int)listView1.SelectedItems[0].Tag;
-
-            monitorThreads[id].Abort();
-
+            string id = listView1.SelectedItems[0].SubItems[0].Text;
+            SCList.Remove(id);
             //monitorThreads[id].ManualReset.Set();
         }
     }

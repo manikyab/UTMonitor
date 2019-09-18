@@ -19,12 +19,14 @@ namespace Siemens.UTMonitor.FileWatcher
         DataFetcher fetcher;
         ErrorFetcher errorFetcher;
         DLLFilter dLLFilter = new DLLFilter();
+        MonitoringSourceControl MonitorSCList;
 
-        public FileWatcher(DataFetcher dataFetcher, string directory,ErrorFetcher errorFetcher)
+        public FileWatcher(DataFetcher dataFetcher, string directory,ErrorFetcher errorFetcher,MonitoringSourceControl sourceControl)
         {
             this.Directory = directory;
             this.fetcher = dataFetcher;
             this.errorFetcher = errorFetcher;
+            this.MonitorSCList = sourceControl;
         }
 
         public void CreateWatcher()
@@ -48,13 +50,26 @@ namespace Siemens.UTMonitor.FileWatcher
         {
             try
             {
-                var result = dLLFilter.FilterDLL(ev.FullPath);
-                if (result)
+                var SCList = MonitorSCList.Invoke();
+                int flag = 0;
+                foreach (var item in SCList)
                 {
-                    using (var driver = new Driver.Driver())
+                    if (ev.FullPath.StartsWith(item))
                     {
-                        Dictionary<string, string> resultData =driver.ExecuteDriver(ev.FullPath, Directory,errorFetcher);
-                        fetcher.Invoke(resultData);
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 1)
+                {
+                    var result = dLLFilter.FilterDLL(ev.FullPath);
+                    if (result)
+                    {
+                        using (var driver = new Driver.Driver())
+                        {
+                            Dictionary<string, string> resultData = driver.ExecuteDriver(ev.FullPath, Directory, errorFetcher);
+                            fetcher.Invoke(resultData);
+                        }
                     }
                 }
             }
