@@ -15,7 +15,7 @@ namespace Siemens.UTMonitor.UI
     public partial class SourceView : Form
     {
         string directory;
-        CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
+        Dictionary<int, Thread> monitorThreads = new Dictionary<int, Thread>();
         public SourceView()
         {
             InitializeComponent();
@@ -40,14 +40,15 @@ namespace Siemens.UTMonitor.UI
                 //Action action = FileWatch;
                 //var token = cts.Token;
                 //Task.Run(action, token);
-                Thread thr = new Thread(FileWatch);
+                var watcher = FileWatch();
+                Thread thr = new Thread(watcher.CreateWatcher) { IsBackground = true };
                 thr.Start();
                 var id = thr.ManagedThreadId;
-
+                monitorThreads.Add(id, thr);
                 //MessageBox.Show(id.ToString());
 
                 ListViewItem li = new ListViewItem(directory);
-                li.Tag = thr;
+                li.Tag = id;
 
                 listView1.Items.Add(li);
 
@@ -60,11 +61,12 @@ namespace Siemens.UTMonitor.UI
             }
         }
 
-        private void FileWatch()
+        private FileWatcher.FileWatcher FileWatch()
         {
             Invoker.DataFetcher dataFetcher = new Invoker.DataFetcher(this.GetNotification);
             Invoker.ErrorFetcher errorFetcher = new Invoker.ErrorFetcher(this.GetError);
             FileWatcher.FileWatcher fileWatcher = new FileWatcher.FileWatcher(dataFetcher, directory, errorFetcher);
+            return fileWatcher;
         }
         public void GetNotification(Dictionary<string, string> list)
         {
@@ -87,8 +89,11 @@ namespace Siemens.UTMonitor.UI
         private void btn_exitMonitor_Click(object sender, EventArgs e)
         {
 
-            Thread thr = (Thread)listView1.SelectedItems[0].Tag;
-            thr.Abort();
+            int id = (int)listView1.SelectedItems[0].Tag;
+
+            monitorThreads[id].Abort();
+
+            //monitorThreads[id].ManualReset.Set();
         }
     }
 }

@@ -34,7 +34,8 @@ namespace Siemens.UTMonitor.UI
             failedData.Text = Data["Failed"];
             inconclusiveData.Text = Data["Inconclusive"];
             assertsData.Text = Data["Asserts"];
-            FileLocation.Text = Data["Location"];
+            var temp = Data["Location"].Split('\\');
+            FileLocation.Text = temp[temp.Length - 4];
         }
 
         private void Close_Click(object sender, EventArgs e)
@@ -44,7 +45,7 @@ namespace Siemens.UTMonitor.UI
 
         private void FileLocation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("notepad.exe", FileLocation.Text);
+            Process.Start("notepad.exe", Data["Location"]);
         }
     }
 }
