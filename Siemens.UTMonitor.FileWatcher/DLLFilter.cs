@@ -9,7 +9,8 @@ namespace Siemens.UTMonitor.FileWatcher
     public class DLLFilter
     {
         public string FileName { get; set; }
-        public bool FilterDLL(string FileFullPath)
+
+        public bool FilterDLL(string FileFullPath)//Checking if DLL meet all condition for executing the Test Cases
         {
             var returnvalue = false;
             var data = FileFullPath.Split('\\');

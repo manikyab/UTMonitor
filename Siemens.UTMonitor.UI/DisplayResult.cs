@@ -26,6 +26,7 @@ namespace Siemens.UTMonitor.UI
 
         private void DisplayResult_Load(object sender, EventArgs e)
         {
+            //Adding test data to Label
             testNameData.Text = Data["Test-Name"];
             ResultData.Text = Data["Result"];
             totalData.Text = Data["Total"];
@@ -45,6 +46,7 @@ namespace Siemens.UTMonitor.UI
 
         private void FileLocation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            //process to show testcase result file to user
             Process.Start("notepad.exe", Data["Location"]);
         }
     }

@@ -15,14 +15,17 @@ namespace Siemens.UTMonitor.XMLParser
 
         public Dictionary<string, string> ResultDisplay(string ResultLocation,ErrorFetcher errorfetcher)
         {
-            Dictionary<string,string> result = null;
+            Dictionary<string,string> result = null;//Dictonary for returning test case result
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(ResultLocation + "\\TestResult.xml");
+                doc.Load(ResultLocation + "\\TestResult.xml");//opening testcase result
                 XmlNodeList elem = doc.GetElementsByTagName("test-run");
                 result = new Dictionary<string, string>();
                 XmlNode fileName = doc.GetElementsByTagName("test-suite")[0];
+
+                //Adding result data in Dictionary
+
                 result.Add("Test-Name", fileName.Attributes["name"].Value);
                 foreach (XmlNode item in elem)
                 {

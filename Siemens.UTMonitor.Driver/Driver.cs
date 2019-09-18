@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Siemens.UTMonitor.Invoker;
 
+//Driver application for running all the background process for file change
 
 namespace Siemens.UTMonitor.Driver
 {
@@ -17,26 +18,33 @@ namespace Siemens.UTMonitor.Driver
         public Dictionary<string, string> ExecuteDriver(string projectDLLPath, string directory,ErrorFetcher errorFetcher)
         {
             Dictionary<string, string> result = null;
+
             this.errorFetcher = errorFetcher;
+
             try
             {
+                //declaring variable for all Location of file and it's name
                 var pathSplit = projectDLLPath.Split('\\');
+
                 var projectLocation = string.Join("\\", pathSplit.Take((pathSplit.Length) - 1));
+
                 var projectName = pathSplit[pathSplit.Length - 4];
-                var testLocation = GetNunitLocation(projectName, projectLocation, directory);
 
-                RunNunitTest(testLocation, projectLocation, projectName);
+                var testLocation = GetNunitLocation(projectName, projectLocation, directory);//Getting location of NUnit of given project
+                
+                RunNunitTest(testLocation, projectLocation, projectName);//Running Nunit test cases for changed project
 
-                result = GetResult(testLocation);
+                result = GetResult(testLocation);//Getting result from TestResult.xml
             }
             catch(Exception e)
             {
                 errorFetcher.Invoke(e.Message);
             }
+
             return result;
         }
         
-        private string GetNunitLocation(string projectName,string sourceLocation,string directory)
+        private string GetNunitLocation(string projectName,string sourceLocation,string directory)//Getting Location of Nunit test DLL
         {
            string returnValue = null;
             using (var nunitfinder = new NunitFinder.NunitFinder())
@@ -45,7 +53,8 @@ namespace Siemens.UTMonitor.Driver
             }
             return returnValue;
         }
-        private void RunNunitTest(string testLocation,string projectLocation,string projectName)
+
+        private void RunNunitTest(string testLocation,string projectLocation,string projectName)//Executing NUnit test cases
         {
             using (var runNunit=new RunNUnit.RunNUnit())
             {
@@ -53,7 +62,7 @@ namespace Siemens.UTMonitor.Driver
             }
         }
 
-        private Dictionary<string, string> GetResult(string ResultLocation)
+        private Dictionary<string, string> GetResult(string ResultLocation)//Getting test case result
         {
             Dictionary<string, string> result = null;
             using (var XMLparse=new XMLParser.XMLParser())

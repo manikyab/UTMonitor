@@ -19,11 +19,11 @@ namespace Siemens.UTMonitor.NunitFinder
             try
             {
                 List<string> files = new List<string>();
-                files.AddRange(Directory.GetFiles(directory, projectName + "Test.dll", SearchOption.AllDirectories));
+                files.AddRange(Directory.GetFiles(directory, projectName + "Test.dll", SearchOption.AllDirectories));//Searching directory for Test case
                 var dest = files[0].Split('\\');
                 var destination = string.Join("\\", dest.Take((dest.Length) - 1));
 
-                returnValue = destination;
+                returnValue = destination;//returning test case Location
             }
             catch(Exception e)
             {

@@ -15,12 +15,14 @@ namespace Siemens.UTMonitor.RunNUnit
 
         private Process CreateProcess()
         {
+            //Creating setup info for cmd process
             var processInfo = new ProcessStartInfo();
             processInfo.FileName = "cmd.exe";
             processInfo.RedirectStandardInput = true;
             processInfo.UseShellExecute = false;
             processInfo.CreateNoWindow = true;
 
+            //Starting process with Start info
             Process process = new Process();
             process.StartInfo = processInfo;
             process.EnableRaisingEvents = true;
@@ -28,7 +30,7 @@ namespace Siemens.UTMonitor.RunNUnit
             return process;
         }
 
-        private void CopyData(string sourceLocation,string destinationLocation,Process process)
+        private void CopyData(string sourceLocation,string destinationLocation,Process process)//Copying latest DLL to test location with overwrite
         {
             var command = "robocopy " + sourceLocation + " " + destinationLocation + " /is /it";
             process.StandardInput.WriteLine(command);
@@ -38,22 +40,22 @@ namespace Siemens.UTMonitor.RunNUnit
         {
             try
             {
-                var process = CreateProcess();
-                process.Start();
+                var process = CreateProcess();//Process Creation
+                process.Start();//Process Start
 
-                var command = "cd " + testlocation;
-
-                process.StandardInput.WriteLine(command);
-
-                CopyData(projectLocation, testlocation, process);
-
-                var nunitConsole = "\"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe\"";
-
-                command = nunitConsole + " " + testlocation + "\\" + projectName + "Test.dll";
+                var command = "cd " + testlocation;//Changning CMD dir to Test case directory
 
                 process.StandardInput.WriteLine(command);
 
-                process.StandardInput.WriteLine("exit");
+                CopyData(projectLocation, testlocation, process);//Copying latest DLL
+
+                var nunitConsole = "\"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe\"";//Location of NUnit Console
+
+                command = nunitConsole + " " + testlocation + "\\" + projectName + "Test.dll";//Commmand for running NUnit console with testcase
+
+                process.StandardInput.WriteLine(command);
+
+                process.StandardInput.WriteLine("exit");//Exiting CMD
 
                 process.WaitForExit();
 
