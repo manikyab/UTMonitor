@@ -22,9 +22,16 @@ namespace Siemens.UTMonitor.FileWatcher
             if (dllName != FileName)
             {
                 
-                if (binFolder == "bin" && dllName.StartsWith(projectName) && !(dllName.EndsWith("Test.dll")))
+                if (binFolder == "bin" && dllName.StartsWith(projectName))
                 {
-                    returnvalue = true;
+                    if (projectName.EndsWith("Test"))
+                    {
+                        returnvalue = false;
+                    }
+                    else
+                    {
+                        returnvalue = true;
+                    }
                 }
             }
             FileName = dllName;

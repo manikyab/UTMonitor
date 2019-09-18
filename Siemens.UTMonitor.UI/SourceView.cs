@@ -15,7 +15,6 @@ namespace Siemens.UTMonitor.UI
     public partial class SourceView : Form
     {
         string directory;
-        Dictionary<int, Thread> monitorThreads = new Dictionary<int, Thread>();
         List<string> SCList = new List<string>();
 
         public SourceView()
@@ -47,12 +46,9 @@ namespace Siemens.UTMonitor.UI
                 Thread thr = new Thread(watcher.CreateWatcher) { IsBackground = true };
                 thr.Start();
                 var id = thr.ManagedThreadId;
-                monitorThreads.Add(id, thr);
                 //MessageBox.Show(id.ToString());
 
                 ListViewItem li = new ListViewItem(directory);
-                li.Tag = id;
-
                 listView1.Items.Add(li);
 
                 folderPath.Text = "";
@@ -97,10 +93,21 @@ namespace Siemens.UTMonitor.UI
 
         private void btn_exitMonitor_Click(object sender, EventArgs e)
         {
-
-            string id = listView1.SelectedItems[0].SubItems[0].Text;
-            SCList.Remove(id);
-            //monitorThreads[id].ManualReset.Set();
+            if (listView1.SelectedItems.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("Are you sure?","Confirmantion",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    string SCName = listView1.SelectedItems[0].SubItems[0].Text;
+                    SCList.Remove(SCName);
+                    //monitorThreads[id].ManualReset.Set();
+                    listView1.SelectedItems[0].Remove();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select a Source folder to remove Monitor", "Alert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }
 }
