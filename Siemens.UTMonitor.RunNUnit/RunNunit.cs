@@ -10,6 +10,8 @@ namespace Siemens.UTMonitor.RunNUnit
 {
     public class RunNUnit:IDisposable
     {
+        ErrorFetcher errFetcher;
+
         public void Dispose() { }
 
 
@@ -19,6 +21,7 @@ namespace Siemens.UTMonitor.RunNUnit
             var processInfo = new ProcessStartInfo();
             processInfo.FileName = "cmd.exe";
             processInfo.RedirectStandardInput = true;
+            processInfo.RedirectStandardError = true;
             processInfo.UseShellExecute = false;
             processInfo.CreateNoWindow = true;
 
@@ -26,8 +29,14 @@ namespace Siemens.UTMonitor.RunNUnit
             Process process = new Process();
             process.StartInfo = processInfo;
             process.EnableRaisingEvents = true;
+            process.ErrorDataReceived += Read_Error;
 
             return process;
+        }
+
+        private void Read_Error(object sender, DataReceivedEventArgs args)
+        {
+            errFetcher.Invoke(args.Data);
         }
 
         private void CopyData(string sourceLocation,string destinationLocation,Process process)//Copying latest DLL to test location with overwrite
@@ -38,6 +47,7 @@ namespace Siemens.UTMonitor.RunNUnit
 
         public void RunNunit(string testlocation,string projectLocation,string projectName,ErrorFetcher errorfetcher)
         {
+            errFetcher = errorfetcher;
             try
             {
                 var process = CreateProcess();//Process Creation
@@ -62,7 +72,7 @@ namespace Siemens.UTMonitor.RunNUnit
             }
             catch (Exception e)
             {
-                errorfetcher.Invoke(e.Message);
+                errFetcher.Invoke(e.Message);
             }
         }
     }
